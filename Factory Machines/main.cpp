@@ -16,6 +16,7 @@ signed main()
         cin >> tmp;
         v.push_back(tmp);
     }
+
     sort(v.begin(), v.end());
 
     int L=1, R=1e18;
