@@ -1,13 +1,11 @@
 #include <bits/stdc++.h>
 #define int long long
-#define pii pair <int, int>
 
 using namespace std;
 
 
 signed main()
 {
-    priority_queue < pii, vector <pii>, greater <pii> > pq;
     ios::sync_with_stdio(0);
     cin.tie(0);
     int n, t;
@@ -20,25 +18,27 @@ signed main()
         v.push_back(tmp);
     }
     sort(v.begin(), v.end());
-    for (i=0;i<n;i++)
-        pq.push({0, i});
 
-    pii p=pq.top();
-    cout << p.second << "\n";
-
-    for (i=1;i<=t;i++) {
-        pii p=pq.top();
-        pq.pop();
-        pq.push({p.first+v[p.second], p.second});
+    int L=1, R=1e18;
+    int mid, sum;
+    bool done;
+    while (L<=R) {
+        mid=(L+R)/2;
+        done=false;
+        sum=0;
+        for (auto it:v) {
+            sum+=mid/it;
+            if (sum>=t) {
+                done=true;
+                break;
+            }
+        }
+        if (done==true)
+            R=mid-1;
+        else
+            L=mid+1;
     }
 
-    int mx=0;
-    while (!pq.empty()) {
-        pii p=pq.top();
-        mx=max(mx, p.first);
-        pq.pop();
-    }
-
-    cout << mx << "\n";
+    cout << L << "\n";
     return 0;
 }
