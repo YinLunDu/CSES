@@ -1,27 +1,29 @@
 #include <bits/stdc++.h>
-#define ll long long
+#define int long long
 
 using namespace std;
 
-int main()
+signed main()
 {
-    ios::sync_with_stdio(0);
-    cin.tie(0);
-    ll x, n, i, tmp;
-    priority_queue <ll, vector <ll>, greater<ll>> pq;
+    ios::sync_with_stdio(0); cin.tie(0);
+
+    int x, n, tmp;
+    priority_queue <int, vector <int>, greater<int>> pq;
     cin >> x >> n;
-    for (i=1;i<=n;i++) {
+    for (int i = 1; i <= n; i++) {
         cin >> tmp;
         pq.push(tmp);
     }
-    ll ans=0;
-    while (pq.size()>=2) {
-        ll a=pq.top();
+    
+    int ans = 0;
+    while (pq.size() >= 2) {
+        int a = pq.top();
         pq.pop();
-        ll b=pq.top();
+        int b = pq.top();
         pq.pop();
-        ans+=a+b;
-        pq.push(a+b);
+        ans += a + b;
+        pq.push(a + b);
     }
     cout << ans << "\n";
+    return 0;
 }

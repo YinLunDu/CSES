@@ -7,6 +7,7 @@
 #include <bits/stdc++.h>
 #define int long long
 #define pii pair<int,int>
+#define loop(i,a,b) for(int i=(a);i<=(b);i++)
 using namespace std;
 
 vector <pii> G[200005];
@@ -17,34 +18,28 @@ signed main()
     ios::sync_with_stdio(0);
     cin.tie(0);
 
-    int n,m,k,i;
-    
+    int n, m, k, a, b, c;
     cin >> n >> m >> k;
-    int a, b, c;
-    for (i=1;i<=m;i++) {
+    loop(i, 1, m) {
         cin >> a >> b >> c;
         G[a].push_back({b, c});
     }
-
-    fill(vis, vis+200005, 0);
-
-    priority_queue < pii, vector <pii>, greater <pii> > pq;
+    priority_queue <pii, vector <pii>, greater <pii>> pq;
     pq.push({0, 1});
-
     while (!pq.empty()) {
         int w = pq.top().first;
-        int node = pq.top().second;
+        int v = pq.top().second;
         pq.pop();
 
-        if (vis[node] >= k)
+        if (vis[v] >= k)
             continue;
-        vis[node]++;
         
-        if (node == n)
+        vis[v]++;
+        if (v == n)
             cout << w << " ";
 
-        for (auto it:G[node])
-            pq.push({w + it.second, it.first});
+        for (pii u : G[v])
+            pq.push({w + u.second, u.first});
     }
     cout << "\n";
 

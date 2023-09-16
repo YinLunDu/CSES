@@ -1,55 +1,47 @@
 #include <bits/stdc++.h>
-#define ll long long
-
+#define int long long
+#define loop(i,a,b) for(int i=(a);i<=(b);i++)
 using namespace std;
 
-vector <ll> G[100005];
+vector <int> G[100005];
 bool vis[100005];
-vector <ll> town;
 
-void DFS(ll node)
+void dfs(int v, int p)
 {
-    vis[node]=1;
-    for (auto i:G[node]) {
-        if (vis[i]==0)
-            DFS(i);
+    vis[v] = true;
+    for (int u : G[v]) {
+        if (u == p) continue;
+        if (!vis[u])
+            dfs(u, v);
     }
 }
 
-int main()
+signed main()
 {
     ios::sync_with_stdio(0);
     cin.tie(0);
-    ll n,m,a,b;
-///      town   road
+    
+    int n, m;
     cin >> n >> m;
-    fill(vis, vis+100005, 0);
-    ll i;
-    for (i=1;i<=m;i++) {
+    int a, b;
+    loop(i, 1, m) {
         cin >> a >> b;
         G[a].push_back(b);
         G[b].push_back(a);
     }
-
-    ll ans=0;
-    for (i=1;i<=n;i++) {
-        if (vis[i]) continue;
-
-        DFS(i);
-        town.push_back(i);
-        ans++;
+    int cnt = 0;
+    vector <int> block;
+    loop(i, 1, n) {
+        if (!vis[i]) {
+            dfs(i, -1);
+            block.push_back(i);
+            cnt++;
+        }
     }
-/*
-    for (i=1;i<=n;i++) {
-        for (auto x:G[i])
-            cout << x << " ";
-        cout << "\n";
+    cout << cnt - 1 << "\n";
+    for (int i = 0; i + 1 < (int)block.size(); i++) {
+        cout << block[i] << " " << block[i + 1] << "\n";
     }
-*/
-    cout << ans-1 << "\n";
 
-    ll sz=town.size();
-    for (i=0;i<=sz-2;i++)
-        cout << town[i] << " " << town[i+1] << "\n";
     return 0;
 }

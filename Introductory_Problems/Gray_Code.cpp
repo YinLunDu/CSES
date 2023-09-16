@@ -3,7 +3,7 @@
 
  11 in Binary: 1011
  Right shift: 1011 >> 1 = 0101
- XOR: 1011 ^ 0101 = 1110
+ XOR : 1011 ^ 0101 = 1110
  **/
 #include <bits/stdc++.h>
 #define int long long

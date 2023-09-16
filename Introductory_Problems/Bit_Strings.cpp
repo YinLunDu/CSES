@@ -3,15 +3,15 @@
 
 using namespace std;
 
-const int MOD=1e9+7;
+const int mod = 1e9+7;
 
 int fastpow(int a, int b)
 {
-    int res=a, ans=1;
-    while (b!=0) {
-        if (b&1) ans = (ans*res)%MOD;
-        res = (res*res)%MOD;
-        b/=2;
+    int res = a, ans = 1;
+    while (b > 0) {
+        if (b & 1) ans = (ans * res) % mod;
+        res = (res * res) % mod;
+        b /= 2;
     }
     return ans;
 }

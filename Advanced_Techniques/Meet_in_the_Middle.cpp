@@ -1,54 +1,54 @@
-/// 折半枚舉
+// #pragma GCC optimize("Ofast,unroll-loops,O3")
 #include <bits/stdc++.h>
 #define int long long
-
+#define IOS ios::sync_with_stdio(0); cin.tie(0);
+#define loop(i,a,b) for(int i=(a);i<=(b);i++)
 using namespace std;
+void dbg() {;}
+/// ------- Initialization End -------
 
-int n, m, mid, ans;
-int arr[50];
-vector <int> v;
-
-void dfs(int idx, int sum)
-{
-    if (idx == mid+1) {
-        v.push_back(sum);
-        return;
-    }
-
-    dfs(idx + 1, sum);
-    dfs(idx + 1, sum + arr[idx]);
-}
-
-void match(int idx, int sum)
-{
-    if (idx == n+1) {
-        ans += upper_bound(v.begin(), v.end(), m-sum) - lower_bound(v.begin(), v.end(), m-sum);
-        return;
-    }
-
-    match(idx + 1, sum);
-    match(idx + 1, sum + arr[idx]);
-}
-
-/// 1 ~ mid   mid+1 ~ n
+int a[50];
 
 signed main()
 {
-    ios::sync_with_stdio(0);
-    cin.tie(0);
-
-    cin >> n >> m;
-    int i;
-    for (i=1;i<=n;i++)
-        cin >> arr[i];
+    IOS
     
-    mid = (1+n)/2;
-    dfs(1, 0);
+    int n, x;
+    cin >> n >> x;
+    loop(i, 1, n) cin >> a[i];
 
-    sort(v.begin(), v.end());
-    ans = 0;
-    match(mid+1, 0);
+    vector <int> L;
+    
+    int mid = n >> 1;
+/// 1 ~ mid 、 mid ~ n
+    int len;
 
+    len = mid - 1 + 1;
+/// idx need to add 1
+    for (int mask = 0; mask < (1 << len); mask++) {
+        int cnt = 0;
+        loop(i, 0, len - 1) {
+            if (mask & (1 << i))
+                cnt += a[i + 1];
+        }
+        L.push_back(cnt);
+    }
+    sort(L.begin(), L.end());
+
+    int ans = 0;
+    len = n - (mid + 1) + 1;
+
+    for (int mask = 0; mask < (1 << len); mask++) {
+        int cnt = 0;
+        loop(i, 0, len - 1) {
+            if (cnt > x) break;
+            if (mask & (1 << i))
+                cnt += a[mid + i + 1];
+        }
+        if (cnt > x) continue;
+
+        ans += upper_bound(L.begin(), L.end(), x - cnt) - lower_bound(L.begin(), L.end(), x - cnt);
+    }
     cout << ans << "\n";
 
     return 0;

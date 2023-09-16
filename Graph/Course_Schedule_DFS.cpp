@@ -1,68 +1,61 @@
 #include <bits/stdc++.h>
-#define ll long long
-
+#define int long long
+#define loop(i,a,b) for(int i=(a);i<=(b);i++)
 using namespace std;
 
-vector <ll> G[100005];
-vector <ll> order;
+vector <int> G[100005];
+vector <int> order;
 int vis[100005];
 bool pointed[100005];
 
-bool DFS(int node)
+bool dfs(int v)
 {
-    vis[node]=2;
-
-    bool legal=true;
-    for (auto x:G[node]) {
-        if (vis[x]==2)
+    vis[v] = 2;
+    bool legal = true;
+    for (int u : G[v]) {
+        if (vis[u] == 2)
             return false;
-        else if (vis[x]==0)
-            legal &= DFS(x);
+        else if (vis[u] == 0)
+            legal &= dfs(u);
     }
-    vis[node]=1;
-    order.push_back(node);
+    vis[v] = 1;
+    order.push_back(v);
     return legal;
 }
 
-int main()
+signed main()
 {
     ios::sync_with_stdio(0);
     cin.tie(0);
-    ll n,m,a,b,i;
 
+    int n, m, a, b;
     cin >> n >> m;
-    for (i=1;i<=n;i++) {vis[i]=0; pointed[i]=0;} /// initial
-
-    for (i=1;i<=m;i++) {
+    loop(i, 1, m) {
         cin >> a >> b;
         G[a].push_back(b);
         pointed[b]=1;
     }
 
-    vector <ll> head;
+    vector <int> head;
     head.clear();
-    for (i=1;i<=n;i++) {
+    loop(i, 1, n) {
         if (pointed[i]==0)
             head.push_back(i);
     }
 
-    ll sz=head.size();
-    if (head.size()==0) {cout << "IMPOSSIBLE\n"; return 0;}
-
-    bool legal=true;
-    for (auto x:head) {
-        legal=DFS(x);
-    }
-
-
-    sz=order.size();
-    if (!legal || sz!=n)
+    bool legal = true;
+    for (int x : head)
+        legal &= dfs(x);
+    
+    if ((int)order.size() != n) legal = false;
+    if (!legal)
         cout << "IMPOSSIBLE\n";
     else {
         reverse(order.begin(), order.end());
-        for (auto x:order)
+        for (int x : order)
             cout << x << " ";
         cout << "\n";
     }
+
     return 0;
 }

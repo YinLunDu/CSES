@@ -1,59 +1,49 @@
 #include <bits/stdc++.h>
-#define ll long long
-
+#define int long long
+#define loop(i,a,b) for(int i=(a);i<=(b);i++)
 using namespace std;
 
-vector <ll> G[200005];
-bool vis[200005];
-int deg[200005];
-queue <ll> q;
-vector <ll> ans;
+vector <int> G[100005];
+int in[100005];
+bool vis[100005];
 
-int main()
+signed main()
 {
     ios::sync_with_stdio(0);
     cin.tie(0);
-    ll n,m;
+    int n, m, a, b;
     cin >> n >> m;
-    ll i,a,b;
-    fill(deg, deg+200005, 0);
-    fill(vis, vis+200005, false);
-
-    for (i=1;i<=m;i++) {
+    loop(i, 1, m) {
         cin >> a >> b;
         G[a].push_back(b);
-        deg[b]++;
+        in[b]++;
     }
 
-    for (i=1;i<=n;i++)
-        if (deg[i]==0)
+    queue <int> q;
+    loop(i, 1, n) {
+        if (in[i] == 0)
             q.push(i);
+    }
 
-    ll tmp;
-    bool legal=true;
-    ans.clear();
-    while (q.size()>0) {
-        tmp=q.front();
+    vector <int> ans;
+    while (!q.empty()) {
+        int v = q.front();
         q.pop();
-        ans.push_back(tmp);
-        vis[tmp]=1;
-        for (auto x:G[tmp]) {
-            if (!vis[x]) {
-                if (deg[x]==1)
-                    q.push(x);
-                deg[x]--;
-            } else {
-                legal=false;
-            }
+        ans.push_back(v);
+        for (auto u : G[v]) {
+            in[u]--;
+            if (in[u] == 0)
+                q.push(u);
         }
     }
 
-    if (!legal || (ll)ans.size()!=n)
-        cout << "IMPOSSIBLE\n";
-    else {
-        for (auto x:ans)
-            cout << x << " ";
+    if ((int)ans.size() == n) {
+        for (int it : ans)
+            cout << it << " ";
         cout << "\n";
+    } else {
+        cout << "IMPOSSIBLE\n";
     }
+
     return 0;
 }

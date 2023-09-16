@@ -1,61 +1,54 @@
 #include <bits/stdc++.h>
-#define ll long long
-
+#define int long long
+#define loop(i,a,b) for(int i=(a);i<=(b);i++)
 using namespace std;
 
-vector <ll> G[100005];
+vector <int> G[100005];
 bool vis[100005];
-int color[100005];
+bool color[100005];
 
-int main()
+signed main()
 {
     ios::sync_with_stdio(0);
     cin.tie(0);
-    ll n,m,i,a,b;
+    int n, m, a, b;
     cin >> n >> m;
 
-    fill(color, color+100005, -1);
-
-    for (i=1;i<=m;i++) {
+    loop(i, 1, m) {
         cin >> a >> b;
         G[a].push_back(b);
         G[b].push_back(a);
     }
 
-    fill(vis, vis+100005, 0);
+    loop(i, 1, n) {
+        if (vis[i]) continue;
 
-    for (i=1;i<=n;i++) {
-        if (vis[i]==1) continue;
-        ///       index color
-        queue <pair <ll,ll>> q;
-        q.push({i,1});
-        vis[i]=1;
-        color[i]=1;
-        while (q.size()>0) {
-            pair <ll,ll> tmp=q.front();
+        queue <int> q;
+        q.push(i);
+        vis[i] = 1;
+        color[i] = true;
+
+        while (!q.empty()) {
+            int v = q.front();
             q.pop();
-
-            int next_color;
-            if (tmp.second==1) next_color=2; else next_color=1;
-
-            for (auto next:G[tmp.first]) {
-
-                if (vis[next]==1) {
-                    if (color[next]!=next_color) {
+            bool next_color = !color[v];
+            for (int u : G[v]) {
+                if (vis[u]) {
+                    if (color[u] != next_color) {
                         cout << "IMPOSSIBLE\n";
                         return 0;
                     }
                 } else {
-                    q.push({next, next_color});
-                    vis[next]=1;
-                    color[next]=next_color;
+                    q.push(u);
+                    vis[u] = true;
+                    color[u] = next_color;
                 }
             }
         }
     }
 
-    for (i=1;i<=n;i++)
-        cout << color[i] << " ";
+    loop(i, 1, n)
+        cout << (int)color[i] + 1 << " ";
     cout << "\n";
     return 0;
 }
