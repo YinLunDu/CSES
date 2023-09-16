@@ -5,33 +5,31 @@ using namespace std;
 
 int cnt[1000005];
 
-signed main()
-{
-    ios::sync_with_stdio(0);
-    cin.tie(0);
+signed main() {
     int n;
     cin >> n;
-    int i,j,mx=0;
+    int mx = 0;
 
-    fill(cnt, cnt+1000005, 0);
+    fill(cnt, cnt + 1000005, 0);
     int tmp;
-    for (i=1;i<=n;i++) {
+    for (int i = 1; i <= n; i++) {
         cin >> tmp;
-        mx=max(mx, tmp);
+        mx = max(mx, tmp);
         cnt[tmp]++;
     }
 
-
-    for (i=mx;i>=1;i--) {
-        int tmp=0;
-        for (j=i;j<=1000000;j+=i) {
-            tmp+=cnt[j];
-        }
-        if (tmp>=2)
+    int ans = -1;
+    for (int i = mx; i >= 1; i--) {
+        int tmp = 0;
+        for (int j = i; j <= 1000000; j += i)
+            tmp += cnt[j];
+        if (tmp >= 2) {
+            ans = i;
             break;
+        }
     }
 
-    cout << i << "\n";
+    cout << ans << "\n";
 
     return 0;
 }

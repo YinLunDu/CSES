@@ -1,53 +1,53 @@
 #include <bits/stdc++.h>
-#define ll long long
-
+#define int long long
 using namespace std;
 
-bool is_prime[1000005];
-vector <ll> prime;
-ll lpf[1000005];
+bool is_prime[2750135];
+int primes[200005];
+int lpf[2750135];
 
-void init()
-{
-    fill(is_prime, is_prime+1000005, true);
-    ll i;
-    for (i=2;i<=1000000;i++) {
+/// The 199999-th of the prime is 2750131
+void init() {
+    fill(is_prime, is_prime + 2750135, true);
+    int idx = 0;
+    for (int i = 2; i <= 2750131; i++) {
         if (is_prime[i]) {
-            prime.push_back(i);
-            lpf[i]=i;
+            primes[++idx] = i;
+            lpf[i] = i;
         }
-        for (auto p:prime) {
-            if (p*i>=1000001) break;
-            is_prime[p*i]=false;
-            lpf[p*i]=p;
-            if (i%p==0) break;
+        for (int j = 1; j <= idx; j++) {
+            if (primes[j] * i > 2750131) break;
+            is_prime[primes[j] * i] = false;
+            lpf[primes[j] * i] = primes[j];
+            if (i % primes[j] == 0) break;
         }
     }
 }
 
-int main()
+int prime_factor(int n)
 {
-    ios::sync_with_stdio(0);
-    cin.tie(0);
-    ll q,n;
+    int ans = 1;
+    while (n != 1) {
+        int tmp = lpf[n], cnt = 0;
+        while (n % tmp == 0) {
+            n /= tmp;
+            cnt++;
+        }
+        ans *= cnt + 1;
+    }
+    return ans;
+}
+
+signed main()
+{
+    int n, q;
 
     init();
 
     cin >> q;
     while (q--) {
         cin >> n;
-        ll ans=1;
-
-        while (n!=1) {
-            ll cnt=0;
-            ll tmp=lpf[n];
-            while (n%tmp==0) {
-                n/=tmp;
-                cnt++;
-            }
-            ans*=cnt+1;
-        }
-        cout << ans << "\n";
+        cout << prime_factor(n) << "\n";
     }
 
     return 0;

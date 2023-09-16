@@ -6,21 +6,20 @@
 5. topf[i] : 節點 i 所在的重鏈深度最低的節點的編號
 6. id[i] : 節點 i 的 DFS 序
 
-第一次 DFS 求出 father depth sz mxson
-第二次 DFS 求出 topf id
+dfs1 求出 father depth sz mxson
+dfs2 求出 topf id
 */
+#pragma GCC optimize("Ofast,unroll-loops,O3")
 #include <bits/stdc++.h>
 #define int long long
 #define pii pair<int,int>
-#define mid (l + r) / 2
-#define lc node * 2
-#define rc (node * 2) + 1
+#define mid ((l + r) >> 1)
+#define lc (node << 1)
+#define rc ((node << 1) | 1)
 
 using namespace std;
 
-using namespace std;
-
-int seg[4 * 200005];
+int seg[4*200005];
 int arr[200005];
 int input[200005];
 int n;
@@ -36,7 +35,7 @@ void build(int node, int l, int r)
         return;
     }
     build(lc, l, mid);
-    build(rc, mid+1, r);
+    build(rc, mid + 1, r);
     seg[node] = max(seg[lc], seg[rc]);
 }
 
@@ -49,22 +48,21 @@ void update(int node, int l, int r, int idx, int val)
     if (idx <= mid)
         update(lc, l, mid, idx, val);
     else
-        update(rc, mid+1, r, idx, val);
+        update(rc, mid + 1, r, idx, val);
     seg[node] = max(seg[lc], seg[rc]);
 }
 
-int query(int node, int l, int r, int qL, int qR)
+int query(int node, int l, int r, int ql, int qr)
 {
-    if (qL <= l && r <= qR)
+    if (ql <= l && r <= qr)
         return seg[node];
 
-    if (qR <= mid)
-        return query(lc, l, mid, qL, qR);
-    else if (mid+1 <= qL)
-        return query(rc, mid+1, r, qL, qR);
-    else {
-        return max(query(lc, l, mid, qL, qR), query(rc, mid+1, r, qL, qR));
-    }
+    if (qr <= mid)
+        return query(lc, l, mid, ql, qr);
+    else if (mid + 1 <= ql)
+        return query(rc, mid + 1, r, ql, qr);
+    else
+        return max(query(lc, l, mid, ql, qr), query(rc, mid + 1, r, ql, qr));
 }
 
 void dfs(int v, int p)

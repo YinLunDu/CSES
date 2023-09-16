@@ -1,33 +1,39 @@
 #include <bits/stdc++.h>
-#define ll long long
-
+#define int long long
+#define pii pair<int,int>
 using namespace std;
 
-ll fastpow(ll a, ll b, ll mod)
-{
-    if (a==0 && b==0) return 1;
-    ll ans=1, now=a;
-    while (b!=0) {
-        if (b&1)
-            ans=(ans*now)%mod;
-        now=(now*now)%mod;
-        b/=2;
-    }
-    return ans;
-}
+const int mod = 1e9 + 7;
 
-int main()
-{
-    ios::sync_with_stdio(0);
-    cin.tie(0);
-    int Q;
-    cin >> Q;
-    ll a,b,c; ll tmp,ans;
-    while (Q--) {
-        cin >> a >> b >> c;
-        tmp=fastpow(b, c, 1000000006);
-        ans=fastpow(a,tmp,1000000007);
-        cout << ans << "\n";
+struct comb {
+    int n;
+
+    comb() : n{0} {}
+
+    int fastpow(int a, int b, int M) {
+        int res = a, ans = 1;
+        while (b > 0) {
+            if (b & 1) ans = (ans * res) % M;
+            res = (res * res) % M;
+            b /= 2;
+        }
+        return ans;
     }
+};
+
+/// a ^ -1 = a ^ (M - 2) (mod M)
+///      1 = a ^ (M - 1) (mod M)
+
+signed main()
+{
+    comb C;
+    int q, a, b, c;
+    cin >> q;
+    while (q--) {
+        cin >> a >> b >> c;
+        int d = C.fastpow(b, c, mod - 1);
+        cout << C.fastpow(a, d, mod) << "\n";
+    }
+
     return 0;
 }
